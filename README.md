@@ -25,14 +25,17 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx
 docker compose up -d
 ```
 
+The port for HTTPS portal is `8443`
+The port for HTTP portal is `8080` if not running with HTTPS (see [Running without HTTPS (Not Recommended)](#running-without-https-not-recommended))
+
 ## After Deploy
 
 CHANGE THE DEFAULT USER `guacadmin` PASSWORD
 CHANGE THE DEFAULT USER `guacadmin` PASSWORD
 CHANGE THE DEFAULT USER `guacadmin` PASSWORD
 
-The defult login is 
+The defult login is:
 
-- Username : `guacadmin` 
-- Password : `guacadmin` 
+- Username : `guacadmin`
 
+- Password : `guacadmin`
