@@ -35,6 +35,7 @@ services:
       # https://guacamole.apache.org/doc/gug/recording-playback.html
       RECORDING_ENABLED: "true"
       GUACD_HOSTNAME: guacd
+      TOTP_ENABLED: "true"
       POSTGRESQL_HOSTNAME: db
       POSTGRESQL_DATABASE: 'guacamole_db'
       POSTGRESQL_USERNAME: 'guacamole_user'
@@ -58,3 +59,4 @@ services:
 
 networks:
   guac:
+
