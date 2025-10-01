@@ -1,62 +1,40 @@
 services:
   guacd:
     image: guacamole/guacd
-    networks:
-      - guac
-    environment:
-      # https://guacamole.apache.org/doc/gug/recording-playback.html
-      RECORDING_SEARCH_PATH: /guacamole_recordings
     restart: always
-    volumes:
-      - ./guacamole_recordings:/guacamole_recordings:rw
 
-  db:
-    image: postgres
-    networks:
-      - guac
+  mysql:
+    image: mysql
     restart: always
     environment:
-      PGDATA: /var/lib/postgresql/data/guacamole
-      POSTGRES_DB: 'guacamole_db'
-      POSTGRES_USER: 'guacamole_user'
-      POSTGRES_PASSWORD: 'guacamole_db_pw'
+      MYSQL_DATABASE: guac
+      MYSQL_USER: guac
+      MYSQL_PASSWORD: guac_pw
+      MYSQL_RANDOM_ROOT_PASSWORD: true
     volumes:
+      - ./mysql_data:/var/lib/mysql:rw
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
-      - ./postgres-data:/var/lib/postgresql/data:rw
 
   guacamole:
     image: guacamole/guacamole
-    networks:
-      - guac
     restart: always
-    # ports:
-    #   - 8080:8080/tcp
     environment:
-      # https://guacamole.apache.org/doc/gug/recording-playback.html
-      RECORDING_ENABLED: "true"
       GUACD_HOSTNAME: guacd
-      TOTP_ENABLED: "true"
-      POSTGRESQL_HOSTNAME: db
-      POSTGRESQL_DATABASE: 'guacamole_db'
-      POSTGRESQL_USERNAME: 'guacamole_user'
-      POSTGRESQL_PASSWORD: 'guacamole_db_pw'
-      WEBAPP_CONTEXT: "ROOT"
-    depends_on:
-      - guacd
-      - db
+      WEBAPP_CONTEXT: ROOT
+      TOTP_ENABLED: true
+      MYSQL_ENABLED: true
+      MYSQL_HOSTNAME: mysql
+      MYSQL_DATABASE: guac
+      MYSQL_USERNAME: guac
+      MYSQL_PASSWORD: guac_pw
+      REMOTE_IP_VALVE_ENABLED: true
 
   web:
     image: nginx
-    networks:
-      - guac
+    restart: always
     ports:
       - '8443:443/tcp'
-    restart: always
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx.crt:/nginx.crt:ro
-      - ./nginx.key:/nginx.key:ro
-
-networks:
-  guac:
-
+      - ./nginx.crt:/etc/nginx/nginx.crt:ro
+      - ./nginx.key:/etc/nginx/nginx.key:ro
