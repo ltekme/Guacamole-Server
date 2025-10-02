@@ -21,7 +21,7 @@ wget https://github.com/ltekme/Guacamole-Server/archive/refs/heads/main.zip && \
 unzip main.zip && cd Guacamole-Server-main && \
 
 # Create Initial DB Schema and a Self-signed cretificate 
-docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql && \
+docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgresql > initdb.sql && \
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt -subj "/O=GuacamoleServer" && \
 
 # Start the Service
@@ -32,7 +32,7 @@ docker compose up -d
 
 ```sh
 # Create Initial DB Schema and a Self-signed cretificate 
-docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql && \
+docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgresql > initdb.sql && \
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt -subj "/O=GuacamoleServer" && \
 
 docker compose up -d

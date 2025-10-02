@@ -3,16 +3,15 @@ services:
     image: guacamole/guacd
     restart: always
 
-  mysql:
-    image: mysql
+  db:
+    image: postgres
     restart: always
     environment:
-      MYSQL_DATABASE: guac
-      MYSQL_USER: guac
-      MYSQL_PASSWORD: guac_pw
-      MYSQL_RANDOM_ROOT_PASSWORD: true
+      POSTGRES_DB: guacamole_db
+      POSTGRES_USER: guacamole_user
+      POSTGRES_PASSWORD: some_password
     volumes:
-      - ./mysql_data:/var/lib/mysql:rw
+      - ./postgres-data:/var/lib/postgresql:rw
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql:ro
 
   guacamole:
@@ -22,13 +21,16 @@ services:
       GUACD_HOSTNAME: guacd
       WEBAPP_CONTEXT: ROOT
       TOTP_ENABLED: true
-      MYSQL_ENABLED: true
-      MYSQL_HOSTNAME: mysql
-      MYSQL_DATABASE: guac
-      MYSQL_USERNAME: guac
-      MYSQL_PASSWORD: guac_pw
+      POSTGRESQL_ENABLED: true
+      POSTGRESQL_HOSTNAME: db
+      POSTGRESQL_DATABASE: guacamole_db
+      POSTGRESQL_USERNAME: guacamole_user
+      POSTGRESQL_PASSWORD: some_password
       REMOTE_IP_VALVE_ENABLED: true
-
+    depends_on:
+      - guacd
+      - db
+  
   web:
     image: nginx
     restart: always
@@ -38,3 +40,5 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx.crt:/etc/nginx/nginx.crt:ro
       - ./nginx.key:/etc/nginx/nginx.key:ro
+    depends_on:
+      - guacamole
