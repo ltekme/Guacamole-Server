@@ -1,0 +1,11 @@
+**/*.*
+
+!docker-compose.yaml
+!.gitignore
+!README.md
+!web
+!web/*
+!web/*.*
+!db
+!db/*
+!db/*.*

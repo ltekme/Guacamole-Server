@@ -9,32 +9,24 @@ Run the folowing to create an nginx cert after cloning the repo and changing the
 The Following packages are required:
 - docker
 - docker-compose
-- openssl
 
 ```sh
 # Setup Alpine (optional, but packages are required)
-apk update && apk add docker docker-compose openssl && \
+apk update && apk add docker docker-compose && \
 rc-service docker start && rc-update add docker && \
 
-# Obtaina a copy of the compose file
 wget https://github.com/ltekme/Guacamole-Server/archive/refs/heads/main.zip && \
 unzip main.zip && cd Guacamole-Server-main && \
 
-# Create Initial DB Schema and a Self-signed cretificate 
-docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgresql > initdb.sql && \
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt -subj "/O=GuacamoleServer" && \
-
-# Start the Service
 docker compose up -d
 ```
 
 ## Deploying
 
 ```sh
-# Create Initial DB Schema and a Self-signed cretificate 
-docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgresql > initdb.sql && \
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt -subj "/O=GuacamoleServer" && \
-
+# Obtaina a copy of the compose file
+wget https://github.com/ltekme/Guacamole-Server/archive/refs/heads/main.zip && \
+unzip main.zip && cd Guacamole-Server-main && \
 docker compose up -d
 ```
 
@@ -51,4 +43,23 @@ The defult login is:
 - Username : `guacadmin`
 
 - Password : `guacadmin`
+
+
+## Recordings
+
+| Screen Recording                    | Param                                     |
+| ----------------------------------- | ----------------------------------------- |
+| Recording path                      | ${HISTORY_PATH}                           |
+| Recording name                      | ${HISTORY_UUID}-${GUAC_DATE}-${GUAC_TIME} |
+| Automatically create recording path | Checked                                   |
+
+
+## RDP File Transfer
+
+| Device Redirection         | Param                  |
+| -------------------------- | ---------------------- |
+| Enable drive               | true                   |
+| Drive name                 | share                  |
+| Drive path                 | /share/${HISTORY_UUID} |
+| Automatically create drive | checked                |
 
