@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: some_password
       PGDATA: /pg_data
     volumes:
-      - guac_db:/pg_data:rw
+      - db_data:/pg_data:rw
 
   guacamole:
     image: guacamole/guacamole
@@ -45,9 +45,12 @@ services:
       - '8443:443/tcp'
     depends_on:
       - guacamole
+    volumes:
+      - web_certs:/certs
 
 volumes:
   guac_recordings:
   guac_share_drive:
-  guac_db:
+  db_data:
+  web_certs:
 
