@@ -56,10 +56,9 @@ The defult login is:
 
 ## RDP File Transfer
 
-| Device Redirection         | Param                  |
-| -------------------------- | ---------------------- |
-| Enable drive               | true                   |
-| Drive name                 | share                  |
-| Drive path                 | /share/${HISTORY_UUID} |
-| Automatically create drive | checked                |
-
+| Device Redirection         | Param                   |
+| -------------------------- | ----------------------- |
+| Enable drive               | true                    |
+| Drive name                 | share                   |
+| Drive path                 | /share/${GUAC_USERNAME} |
+| Automatically create drive | checked                 |

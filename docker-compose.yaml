@@ -3,8 +3,8 @@ services:
     image: guacamole/guacd
     restart: unless-stopped
     volumes:
-      - ./share_drive:/share
-      - ./recordings:/var/lib/guacamole/recordings
+      - guac_share_drive:/share
+      - guac_recordings:/var/lib/guacamole/recordings
 
   db:
     build: db
@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: some_password
       PGDATA: /pg_data
     volumes:
-      - ./db_data:/pg_data:rw
+      - guac_db:/pg_data:rw
 
   guacamole:
     image: guacamole/guacamole
@@ -23,7 +23,7 @@ services:
     environment:
       GUACD_HOSTNAME: guacd
       WEBAPP_CONTEXT: ROOT
-      TOTP_ENABLED: false
+      TOTP_ENABLED: true
       RECORDING_ENABLED: true
       POSTGRESQL_ENABLED: true
       POSTGRESQL_HOSTNAME: db
@@ -35,8 +35,8 @@ services:
       - guacd
       - db
     volumes:
-      - ./share_drive:/share
-      - ./recordings:/var/lib/guacamole/recordings
+      - guac_share_drive:/share
+      - guac_recordings:/var/lib/guacamole/recordings
 
   web:
     build: web
@@ -45,3 +45,9 @@ services:
       - '8443:443/tcp'
     depends_on:
       - guacamole
+
+volumes:
+  guac_recordings:
+  guac_share_drive:
+  guac_db:
+
