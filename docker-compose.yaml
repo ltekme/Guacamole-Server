@@ -16,6 +16,7 @@ services:
       PGDATA: /pg_data
     volumes:
       - db_data:/pg_data:rw
+      - db_data:/var/lib/postgresql:rw
 
   guacamole:
     image: guacamole/guacamole
